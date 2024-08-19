@@ -1,6 +1,7 @@
 import {useState} from 'react';
 import PropTypes from "prop-types";
-import {resultInitialState} from "./Questions";
+import {resultInitialState} from "../../Questions.js";
+import "./Quiz.scss";
 
 const Quiz = ( {questions: questions} ) => {
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)

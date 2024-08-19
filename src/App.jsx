@@ -1,4 +1,4 @@
-import Quiz from "./Quiz";
+import Quiz from "./components/Quiz/Quiz.jsx";
 import {jsQuizz} from "./Questions.js";
 
 function App() {
