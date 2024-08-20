@@ -1,7 +1,9 @@
 import {useState} from 'react';
-import PropTypes from "prop-types";
-import {resultInitialState} from "../../Questions.js";
-import "./Quiz.scss";
+import PropTypes from 'prop-types';
+import {resultInitialState} from '../../Questions.js';
+import './Quiz.scss';
+import '../AnswerTimer/AnswerTimer.jsx';
+import AnswerTimer from "../AnswerTimer/AnswerTimer.jsx";
 
 const Quiz = ( {questions: questions} ) => {
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
@@ -52,10 +54,11 @@ const Quiz = ( {questions: questions} ) => {
     }
 
     return (
-        <div className={"quiz-container"}>
+        <div className={'quiz-container'}>
             {!isOnResultPage ? (<>
-                <span className="active-question-no"> {currentQuestionIndex + 1}</span>
-                <span className="total-questions">/{questions.length} </span>
+                <AnswerTimer />
+                <span className='active-question-no'> {currentQuestionIndex + 1}</span>
+                <span className='total-questions'>/{questions.length} </span>
                 <h2> {question} </h2>
                 <ul>
                     {
