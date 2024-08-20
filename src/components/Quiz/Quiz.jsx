@@ -50,13 +50,16 @@ const Quiz = ( {questions: questions} ) => {
     const onTryAgainClick = () => {
         setResult(resultInitialState);
         setIsOnResultPage(false);
+    };
 
+    const handleTimeUp = () => {
+        alert('Time is up!');
     }
 
     return (
         <div className={'quiz-container'}>
             {!isOnResultPage ? (<>
-                <AnswerTimer />
+                <AnswerTimer duration={10} onTimeUp={handleTimeUp} />
                 <span className='active-question-no'> {currentQuestionIndex + 1}</span>
                 <span className='total-questions'>/{questions.length} </span>
                 <h2> {question} </h2>
