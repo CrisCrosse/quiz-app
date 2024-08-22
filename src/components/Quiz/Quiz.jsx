@@ -11,6 +11,7 @@ const Quiz = ( {questions: questions} ) => {
     const [answer, setAnswer] = useState(null)
     const [result, setResult] = useState(resultInitialState)
     const [isOnResultPage, setIsOnResultPage] = useState(false)
+    const [showAnswerTimer, setShowAnswerTimer] = useState(true)
 
     const {question, choices, correctAnswer } = questions[currentQuestionIndex];
 
@@ -23,10 +24,11 @@ const Quiz = ( {questions: questions} ) => {
         }
     }
 
-    const onNextClick = () => {
+    const onNextClick = (finalAnswer) => {
         setAnswerIndex(null);
+        setShowAnswerTimer(false);
         setResult((prev) =>
-            answer ? {
+            finalAnswer ? {
                 ...prev,
                 score: prev.score + 1,
                 correctAnswers: prev.correctAnswers + 1,
@@ -43,7 +45,9 @@ const Quiz = ( {questions: questions} ) => {
             setCurrentQuestionIndex(0);
             setIsOnResultPage(true);
         }
-
+        setTimeout(() => {
+            setShowAnswerTimer(true);
+        })
 
     }
 
@@ -53,13 +57,14 @@ const Quiz = ( {questions: questions} ) => {
     };
 
     const handleTimeUp = () => {
-        alert('Time is up!');
+        setAnswer(false);
+        onNextClick(false);
     }
 
     return (
         <div className={'quiz-container'}>
             {!isOnResultPage ? (<>
-                <AnswerTimer duration={10} onTimeUp={handleTimeUp} />
+                { showAnswerTimer && <AnswerTimer duration={5} onTimeUp={handleTimeUp} /> }
                 <span className='active-question-no'> {currentQuestionIndex + 1}</span>
                 <span className='total-questions'>/{questions.length} </span>
                 <h2> {question} </h2>
@@ -78,7 +83,7 @@ const Quiz = ( {questions: questions} ) => {
                     }
                 </ul>
                 <div className={'footer'}>
-                    <button onClick={onNextClick} disabled={answerIndex === null}>
+                    <button onClick={() => onNextClick(answer)} disabled={answerIndex === null}>
                         {currentQuestionIndex === questions.length -1 ? 'Finish' : 'Next'}
                     </button>
                 </div>

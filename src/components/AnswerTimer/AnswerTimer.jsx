@@ -32,7 +32,15 @@ function AnswerTimer ( {duration, onTimeUp} ) {
     }, [counter]);
     return (
      <div className='answer-timer-container'>
-        <div className='progress'> {counter} </div>
+        <div
+            style={{
+                width: `${progressLoaded}%`,
+                backgroundColor: `${ 
+                    progressLoaded < 40 ? 'lightgreen' 
+                    : progressLoaded < 70 ? 'orange' 
+                    : 'red'}`
+            }}
+            className='progress'></div>
     </div>
     )
 }
