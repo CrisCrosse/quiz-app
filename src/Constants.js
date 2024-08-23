@@ -1,5 +1,12 @@
-export const jsQuizz = {
+export const jsQuiz = {
     questions: [
+        {
+            question:
+                "............ provide a way to pass data from one component to the other. \n Fill in the blank",
+            choices: [],
+            type: "FIB",
+            correctAnswer: "Props",
+        },
         {
             question:
                 "Which of the following is used in React.js to increase performance?",
