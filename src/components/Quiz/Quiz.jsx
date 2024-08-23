@@ -1,9 +1,9 @@
 import {useState} from 'react';
 import PropTypes from 'prop-types';
 import {resultInitialState} from '../../Questions.js';
+// feels odd to need to import this from questions.js when it is just a set of counters started at 0
 import './Quiz.scss';
-import '../AnswerTimer/AnswerTimer.jsx';
-import AnswerTimer from "../AnswerTimer/AnswerTimer.jsx";
+import AnswerTimer from "../AnswerTimer/AnswerTimer";
 
 const Quiz = ( {questions: questions} ) => {
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
