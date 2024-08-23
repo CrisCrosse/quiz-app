@@ -6,88 +6,69 @@ import './Quiz.scss';
 import AnswerTimer from "../AnswerTimer/AnswerTimer";
 
 const Quiz = ( {questions: questions} ) => {
+    // does passing in the questions here make sense as a prop? just import directly from Quiz component
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
-    const [answerIndex, setAnswerIndex] = useState(null)
-    const [answer, setAnswer] = useState(null)
+    const [SelectedAnswerIndex, setSelectedAnswerIndex] = useState(null)
+    const [isCorrectAnswer, setIsCorrectAnswer] = useState(null)
     const [result, setResult] = useState(resultInitialState)
     const [isOnResultPage, setIsOnResultPage] = useState(false)
-    const [showAnswerTimer, setShowAnswerTimer] = useState(true)
+    const [isAnswerTimerVisible, setIsAnswerTimerVisible] = useState(true)
 
     const {question, choices, correctAnswer } = questions[currentQuestionIndex];
+    // questions is limited by to contain these 3 fields would this be applicable for an image quiz?
+    // would probably want a whole different component? or extend this component
 
-    const onAnswerClick = (answer, index) => {
-        setAnswerIndex(index);
-        if(answer == correctAnswer) {
-            setAnswer(true)
+    const onAnswerClick = (clickedAnswer, clickedIndex) => {
+        setSelectedAnswerIndex(clickedIndex);
+        if(clickedAnswer == correctAnswer) {
+            setIsCorrectAnswer(true)
         } else{
-            setAnswer(false)
+            setIsCorrectAnswer(false)
         }
     }
 
-    const onNextClick = (finalAnswer) => {
-        setAnswerIndex(null);
-        setShowAnswerTimer(false);
-        setResult((prev) =>
-            finalAnswer ? {
-                ...prev,
-                score: prev.score + 1,
-                correctAnswers: prev.correctAnswers + 1,
-            }
+    const onNextClick = (isCorrectAnswerSelected) => {
+        setSelectedAnswerIndex(null);
+        setIsAnswerTimerVisible(false);
+        setResult(
+            (previousResult) => isCorrectAnswerSelected ? {
+                score: previousResult.score + 1,
+                correctAnswers: previousResult.correctAnswers + 1,
+                wrongAnswers: previousResult.wrongAnswers }
             : {
-                ...prev,
-                wrongAnswers: prev.wrongAnswers + 1,
-            }
+                score: previousResult.score,
+                correctAnswers: previousResult.correctAnswers,
+                wrongAnswers: previousResult.wrongAnswers + 1 }
         )
 
-        if(currentQuestionIndex !== questions.length - 1) {
-            setCurrentQuestionIndex((prev) => prev + 1)
-        } else {
-            setCurrentQuestionIndex(0);
+        if(isLastQuestion()) {
             setIsOnResultPage(true);
+            // this triggers rerender and hits the conditional so the quiz cquestions component is not dislayed
+        } else {
+            setCurrentQuestionIndex((previousQuestionIndex) => previousQuestionIndex + 1)
         }
-        setTimeout(() => {
-            setShowAnswerTimer(true);
-        })
 
+        // this is called within setTimeout so that there is a delay between the first hiding of answer timer and this display
+        setTimeout(() => { setIsAnswerTimerVisible(true) })
+    }
+    function isLastQuestion() {
+        return (currentQuestionIndex == questions.length - 1)
     }
 
     const onTryAgainClick = () => {
+        setCurrentQuestionIndex(0);
         setResult(resultInitialState);
         setIsOnResultPage(false);
     };
 
     const handleTimeUp = () => {
-        setAnswer(false);
         onNextClick(false);
     }
 
     return (
         <div className={'quiz-container'}>
-            {!isOnResultPage ? (<>
-                { showAnswerTimer && <AnswerTimer duration={5} onTimeUp={handleTimeUp} /> }
-                <span className='active-question-no'> {currentQuestionIndex + 1}</span>
-                <span className='total-questions'>/{questions.length} </span>
-                <h2> {question} </h2>
-                <ul>
-                    {
-                        choices.map( (choice, index) => (
-                                <li
-                                    onClick={() => onAnswerClick(choice, index) }
-                                    key={choice}
-                                    className={answerIndex === index ? 'selected-answer' : null}
-                                >
-                                    {choice}
-                                </li>
-                            )
-                        )
-                    }
-                </ul>
-                <div className={'footer'}>
-                    <button onClick={() => onNextClick(answer)} disabled={answerIndex === null}>
-                        {currentQuestionIndex === questions.length -1 ? 'Finish' : 'Next'}
-                    </button>
-                </div>
-            </>) : <div className={'result'}>
+            {isOnResultPage ? 
+                (<div className={'result'}>
                 <h3>Result</h3>
                 <p>
                     Total Questions: <span>{questions.length}</span>
@@ -102,7 +83,34 @@ const Quiz = ( {questions: questions} ) => {
                     Total Wrong Answers: <span>{result.wrongAnswers}</span>
                 </p>
                 <button onClick={onTryAgainClick}> Try Again </button>
-            </div>}
+                </div>)
+            : 
+                (<>
+                    { isAnswerTimerVisible && <AnswerTimer duration={5} onTimeUp={handleTimeUp} /> }
+                    <span className='active-question-no'> {currentQuestionIndex + 1}</span>
+                    <span className='total-questions'>/{questions.length} </span>
+                    <h2> {question} </h2>
+                    <ul>
+                        {
+                            choices.map( (choice, index) => (
+                                    <li
+                                        onClick={() => onAnswerClick(choice, index) }
+                                        key={choice}
+                                        className={SelectedAnswerIndex === index ? 'selected-answer' : null}
+                                    >
+                                        {choice}
+                                    </li>
+                                )
+                            )
+                        }
+                    </ul>
+                    <div className={'footer'}>
+                        <button onClick={() => onNextClick(isCorrectAnswer)} disabled={SelectedAnswerIndex === null}>
+                            {isLastQuestion() ? 'Finish' : 'Next'}
+                        </button>
+                    </div>
+                </>)
+            } 
 
         </div>
     );
