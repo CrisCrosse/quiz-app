@@ -128,7 +128,7 @@ const Quiz = ( {questions: questions} ) => {
                 </div>)
             : 
                 (<>
-                    { isAnswerTimerVisible && <AnswerTimer duration={1000} onTimeUp={handleTimeUp} /> }
+                    { isAnswerTimerVisible && <AnswerTimer duration={5} onTimeUp={handleTimeUp} /> }
                     <span className='active-question-no'> {currentQuestionIndex + 1}</span>
                     <span className='total-questions'>/{questions.length} </span>
                     <h2> {question} </h2>
