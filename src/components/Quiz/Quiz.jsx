@@ -4,6 +4,7 @@ import {resultInitialState} from '../../Constants.js';
 // feels odd to need to import this from questions.js when it is just a set of counters started at 0
 import './Quiz.scss';
 import AnswerTimer from "../AnswerTimer/AnswerTimer";
+import Result from "../Result/Result";
 
 const Quiz = ( {questions: questions} ) => {
     // does passing in the questions here make sense as a prop? just import directly from Quiz component
@@ -31,6 +32,7 @@ const Quiz = ( {questions: questions} ) => {
     const onNextClick = (isCorrectAnswerSelected) => {
         setSelectedAnswerIndex(null);
         setIsAnswerTimerVisible(false);
+        setInputAnswer('');
         setResult(
             (previousResult) => isCorrectAnswerSelected ? {
                 score: previousResult.score + 1,
@@ -110,22 +112,7 @@ const Quiz = ( {questions: questions} ) => {
     return (
         <div className={'quiz-container'}>
             {isOnResultPage ?
-                (<div className={'result'}>
-                    <h3>Result</h3>
-                    <p>
-                        Total Questions: <span>{questions.length}</span>
-                    </p>
-                    <p>
-                        Total Score: <span>{result.score}</span>
-                    </p>
-                    <p>
-                        Total Correct Answers: <span>{result.correctAnswers}</span>
-                    </p>
-                    <p>
-                        Total Wrong Answers: <span>{result.wrongAnswers}</span>
-                    </p>
-                    <button onClick={onTryAgainClick}> Try Again </button>
-                </div>)
+                (<Result noOfQuestions={questions.length} result={result} onTryAgainClick={onTryAgainClick} />)
             : 
                 (<>
                     { isAnswerTimerVisible && <AnswerTimer duration={5} onTimeUp={handleTimeUp} /> }
