@@ -1,4 +1,5 @@
 import Quiz from "./components/Quiz/Quiz.jsx";
+import Homepage from "./components/Homepage/Homepage.jsx";
 import { useState, useEffect } from "react";
 import { getDatabase, ref, onValue } from "firebase/database";
 import fireUp from "./configuration.jsx";
@@ -6,24 +7,10 @@ import fireUp from "./configuration.jsx";
 function App() {
   const [questions, setQuestions] = useState([]);
   const [data, setData] = useState([]);
+  const [isOnHomepage, setIsOnHomepage] = useState(true);
 
   useEffect(() => {
     getQuestions()
-
-    const database = getDatabase(fireUp, 'https://puzzle-club-db-default-rtdb.europe-west1.firebasedatabase.app/');
-    const collectionRef = ref(database, "Users")
-
-    const fetchData = () => {
-      onValue(collectionRef, (snapshot) => {
-        const dataItem = snapshot.val();
-
-        if (dataItem){
-          const displayItem = Object.values(dataItem);
-          setData(displayItem);
-        }
-      });
-    }
-    fetchData();
   }, []);
 
   const getQuestions = async() => {
@@ -41,16 +28,7 @@ function App() {
     }
   }
   return (
-      // <div>
-      //   <h1>Data from database:</h1>
-      //   <p> {data} </p>
-      //   <ul>
-      //     {data.map((item, index) => (
-      //         <li key={index}>{item} {index}</li>
-      //     ))}
-      //   </ul>
-      // </div>
-     questions.length && <Quiz questions={questions} />);
+    isOnHomepage ? <Homepage /> : <Quiz questions={questions} />);
 }
 
 export default App
