@@ -61,3 +61,22 @@ export const resultInitialState = {
     correctAnswers: 0,
     wrongAnswers: 0
 }
+
+export const quizOptions = {
+    "Quiz 1": {
+        "type": "MCQs",
+        "questions": {},
+        "images": {},
+    },
+    "Quiz 2": {
+        "type": "MCQs+Images",
+        "questions": {},
+        "images": {},
+    },
+    "Quiz 3": {
+        "type": "FIB",
+        "questions": {},
+        "images": {},
+    }
+}
+export default { jsQuiz, resultInitialState, quizOptions };
