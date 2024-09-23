@@ -79,4 +79,4 @@ export const quizOptions = {
         "images": {},
     }
 }
-export default { jsQuiz, resultInitialState, quizOptions };
+export default { jsQuiz };

@@ -7,44 +7,67 @@
   align-items: center;
   justify-content: center;
   height: 100vh;
-}
-h1 {
-  font-size: 64px;
-  font-weight: 500;
-  color: $primary;
-  padding-top: 75px;
-  padding-bottom: 50px;
-  align-content: center;
-  justify-content: center;
-  text-align: center;
-}
-p {
+
+  h1 {
+    font-size: 64px;
+    font-weight: 500;
+    color: $primary;
+    padding-top: 75px;
+    padding-bottom: 50px;
+    align-content: center;
+    justify-content: center;
+    text-align: center;
+  }
+  p {
     font-size: 24px;
     font-weight: 500;
     color: $primary;
     padding: 0 50px;
     text-align: center;
-}
-ol {
-  li {
-    padding: 10px 10px;
-    margin-top: 10px;
+  }
+
+  ol {
+    .selected-quiz {
+      background: $primary;
+      color: $accent;
+    }
+    padding: 0;
+    li {
+      padding: 10px 10px;
+      margin-top: 10px;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      display: flex;
+      border: 2px solid $foreground;
+      border-radius: 10px;
+      position: relative;
+      background: $bg;
+      &:hover {
+        color: $primary;
+        background: $accent;
+      }
+    }
+  }
+
+  button {
+    background: $bg;
+    border-radius: 9px;
+    font-size: 18px;
+    color: $primary;
+    padding: 10px 42px;
+    outline: none;
+    border: none;
+    margin-top: 15px;
+    cursor: pointer;
     justify-content: center;
     align-items: center;
     text-align: center;
-    display: flex;
-    border: 2px solid $foreground;
-    border-radius: 10px;
-    position: relative;
-    background: $bg;
-    &:hover {
-      color: $primary;
-      background: $accent;
-    }
-    .selected{
-        color: $bg;
-        background: $primary;
-    }
 
+    &:disabled {
+      background: $bg-accent;
+      color: $disabled;
+      cursor: not-allowed;
+    }
   }
 }

@@ -16,6 +16,8 @@ const Quiz = ( {questions: questions} ) => {
     const [isAnswerTimerVisible, setIsAnswerTimerVisible] = useState(true)
     const [inputAnswer, setInputAnswer] = useState('')
 
+    console.log(questions)
+    console.log(currentQuestionIndex)
     const {question, choices, correctAnswer, type } = questions[currentQuestionIndex];
     // questions is limited by to contain these 3 fields would this be applicable for an image quiz?
     // would probably want a whole different component? or extend this component
